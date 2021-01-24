@@ -456,7 +456,7 @@ func UpdateProfile(s *models.Server) error {
 		s.Resp.Succ = false
 		s.Resp.StatusCd = 400
 		s.Resp.Ctx = s.Ctx
-		s.Resp.Msg = config.ErrorMSG
+		s.Resp.Msg = config.ErrorMSG +" "+err.Error()
 		return resp.JSON(s.Resp)
 	}
 
