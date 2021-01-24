@@ -427,6 +427,49 @@ func IsUserVerified(s *models.Server) error {
 	return resp.JSON(s.Resp)
 }
 
+//UpdateProfile ...
+func UpdateProfile(s *models.Server)error{
+	//create a new instance of the User struct as user
+	user := validations.User{}
+	s.Ctx.BodyParser(&user)
+	user.Prepare();
+
+	objectID, err := primitive.ObjectIDFromHex(user.ID)
+	if err != nil {
+		s.Resp.Data = nil
+		s.Resp.Succ = false
+		s.Resp.StatusCd = 400
+		s.Resp.Ctx = s.Ctx
+		s.Resp.Msg = config.InvalidID
+		return resp.JSON(s.Resp)
+	}
+
+	filter := bson.M{"_id": objectID}
+
+	update := bson.M{
+		"$set": user,
+	}
+
+	_, err = s.Coll.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		s.Resp.Data = nil
+		s.Resp.Succ = false
+		s.Resp.StatusCd = 400
+		s.Resp.Ctx = s.Ctx
+		s.Resp.Msg = config.ErrorMSG
+		return resp.JSON(s.Resp)
+	}
+
+	//return response
+	s.Resp.Ctx = s.Ctx
+	s.Resp.StatusCd = 200
+	s.Resp.Msg = config.UpdateSuccess
+	s.Resp.Data = nil
+	s.Resp.Succ = true
+
+	return resp.JSON(s.Resp)
+}
+
 //GetUser ...
 func GetUser(user validations.User, filter bson.M, s *models.Server) (validations.User, error) {
 

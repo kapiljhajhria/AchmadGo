@@ -99,4 +99,13 @@ func UserController(s *models.Server) {
 		return services.CheckPasswordRecoveryToken(s)
 	})
 
+	s.App.Patch(config.GetAPIBase()+"user/updateProfile",
+	func(c *fiber.Ctx) error {
+		s.Ctx = c
+		s.Resp = resp
+		s.Coll = collection
+		return services.UpdateProfile(s)
+
+	})
+
 }
