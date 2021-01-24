@@ -446,6 +446,9 @@ func UpdateProfile(s *models.Server) error {
 
 	filter := bson.M{"_id": objectID}
 
+	//remove the user ID from the user struct
+	user.ID = ""
+
 	update := bson.M{
 		"$set": &user,
 	}
