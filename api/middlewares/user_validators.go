@@ -51,6 +51,11 @@ func UserValidators(s *models.Server) {
 		return ValidateUser("token", c)
 	})
 
+	s.App.Use(config.GetAPIBase()+"user/updateProfile", func(c *fiber.Ctx) error {
+
+		return ValidateUser("id", c)
+	})
+
 }
 
 //ValidateUser ...
