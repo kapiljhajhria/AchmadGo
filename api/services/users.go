@@ -428,11 +428,11 @@ func IsUserVerified(s *models.Server) error {
 }
 
 //UpdateProfile ...
-func UpdateProfile(s *models.Server)error{
+func UpdateProfile(s *models.Server) error {
 	//create a new instance of the User struct as user
 	user := validations.User{}
 	s.Ctx.BodyParser(&user)
-	user.Prepare();
+	user.Prepare()
 
 	objectID, err := primitive.ObjectIDFromHex(user.ID)
 	if err != nil {
@@ -447,7 +447,7 @@ func UpdateProfile(s *models.Server)error{
 	filter := bson.M{"_id": objectID}
 
 	update := bson.M{
-		"$set": user,
+		"$set": &user,
 	}
 
 	_, err = s.Coll.UpdateOne(context.TODO(), filter, update)
