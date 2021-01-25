@@ -98,6 +98,7 @@ func Register(s *models.Server) error {
 	//hash user's password
 	hashPass, _ := config.Hash(userPassword)
 	user.Password = string(hashPass)
+	user.Settings = models.UserSettings{true, true, false, true, false}
 
 	result, err := s.Coll.InsertOne(context.TODO(), user)
 	if err != nil {
@@ -459,7 +460,7 @@ func UpdateProfile(s *models.Server) error {
 		s.Resp.Succ = false
 		s.Resp.StatusCd = 400
 		s.Resp.Ctx = s.Ctx
-		s.Resp.Msg = config.ErrorMSG +" "+err.Error()
+		s.Resp.Msg = config.ErrorMSG + " " + err.Error()
 		return resp.JSON(s.Resp)
 	}
 

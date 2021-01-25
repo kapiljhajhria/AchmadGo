@@ -1,10 +1,7 @@
 package models
 
 //UserSettings ...
-type UserSettings interface {}
-
-//usersettings ...
-type usersettings struct{
+type UserSettings struct{
 	AllowNotifications      bool `bson:"allow_notifications,omitempty" json:"allow_notifications" xml:"allow_notifications" form:"allow_notifications"`
 	ShowLatestBlogUpdates bool `bson:"show_latest_blog_updates,omitempty" json:"show_latest_blog_updates" xml:"show_latest_blog_updates" form:"show_latest_blog_updates"`
 	DisplayMyPostsToMeFirst bool `bson:"display_my_posts_to_me_first,omitempty" json:"display_my_posts_to_me_first" xml:"display_my_posts_to_me_first" form:"display_my_posts_to_me_first"`
@@ -26,10 +23,4 @@ type User struct {
 	Status   string `bson:"status,omitempty" json:"status" xml:"status" form:"status"`
 	IsVerified bool   `bson:"isverified,omitempty" json:"isverified" xml:"isverified" form:"isverified"`
 	Token      string `bson:"token,omitempty" json:"token" xml:"token" form:"token"`
-}
-
-//New ...
-func New() UserSettings {
-	// enforce the default value here
-    return usersettings{true, true,false,true,false}
 }
