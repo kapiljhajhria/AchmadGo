@@ -6,6 +6,7 @@ type User struct {
 	FullName   string `bson:"fullname,omitempty" json:"fullname" xml:"fullname" form:"fullname"`
 	ProfileImage   string `bson:"profile_image,omitempty" json:"profile_image" xml:"profile_image" form:"profile_image"`
 	Email      string `bson:"email,omitempty" json:"email" xml:"email" form:"email"`
+	Gender      string `bson:"gender,omitempty" json:"gender" xml:"gender" form:"gender"`
 	Country      string `bson:"country,omitempty" json:"country" xml:"country" form:"country"`
 	Password   string `bson:"password,omitempty" json:"password" xml:"password" form:"password"`
 	Status   string `bson:"status,omitempty" json:"status" xml:"status" form:"status"`
