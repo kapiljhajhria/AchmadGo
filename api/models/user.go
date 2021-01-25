@@ -1,12 +1,15 @@
 package models
 
 //UserSettings ...
-type UserSettings struct{
-	AllowNotifications      string `bson:"allow_notifications,omitempty" json:"allow_notifications" xml:"allow_notifications" form:"allow_notifications"`
-	ShowLatestBlogUpdates string `bson:"show_latest_blog_updates,omitempty" json:"show_latest_blog_updates" xml:"show_latest_blog_updates" form:"show_latest_blog_updates"`
-	DisplayMyPostsToMeFirst string `bson:"display_my_posts_to_me_first,omitempty" json:"display_my_posts_to_me_first" xml:"display_my_posts_to_me_first" form:"display_my_posts_to_me_first"`
-	KeepAPublicProfile string `bson:"keep_a_public_profile,omitempty" json:"keep_a_public_profile" xml:"keep_a_public_profile" form:"keep_a_public_profile"`
-	KeepMyBlogPostsPrivate string `bson:"keep_my_blog_posts_private,omitempty" json:"keep_my_blog_posts_private" xml:"keep_my_blog_posts_private" form:"keep_my_blog_posts_private"`
+type UserSettings interface {}
+
+//usersettings ...
+type usersettings struct{
+	AllowNotifications      bool `bson:"allow_notifications,omitempty" json:"allow_notifications" xml:"allow_notifications" form:"allow_notifications"`
+	ShowLatestBlogUpdates bool `bson:"show_latest_blog_updates,omitempty" json:"show_latest_blog_updates" xml:"show_latest_blog_updates" form:"show_latest_blog_updates"`
+	DisplayMyPostsToMeFirst bool `bson:"display_my_posts_to_me_first,omitempty" json:"display_my_posts_to_me_first" xml:"display_my_posts_to_me_first" form:"display_my_posts_to_me_first"`
+	KeepAPublicProfile bool `bson:"keep_a_public_profile,omitempty" json:"keep_a_public_profile" xml:"keep_a_public_profile" form:"keep_a_public_profile"`
+	KeepMyBlogPostsPrivate bool `bson:"keep_my_blog_posts_private,omitempty" json:"keep_my_blog_posts_private" xml:"keep_my_blog_posts_private" form:"keep_my_blog_posts_private"`
 }
 
 //User ...
@@ -23,4 +26,10 @@ type User struct {
 	Status   string `bson:"status,omitempty" json:"status" xml:"status" form:"status"`
 	IsVerified bool   `bson:"isverified,omitempty" json:"isverified" xml:"isverified" form:"isverified"`
 	Token      string `bson:"token,omitempty" json:"token" xml:"token" form:"token"`
+}
+
+//New ...
+func New() UserSettings {
+	// enforce the default value here
+    return usersettings{true, true,false,true,false}
 }
