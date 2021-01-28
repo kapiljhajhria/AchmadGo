@@ -33,10 +33,10 @@ var InfoSenderEmail = "info@zouq.cx"
 var ServicesSenderEmail = "services@zouq.cx"
 
 //VerificationURL ...
-var VerificationURL = BaseURL+"/verify?u="
+var VerificationURL = BaseURL + "/verify?u="
 
 //RecoveryURL ...
-var RecoveryURL = BaseURL+"/change-password?u="
+var RecoveryURL = BaseURL + "/change-password?u="
 
 //CantSendEmail ...
 var CantSendEmail = "Can't send email. An error occurred!"
@@ -79,3 +79,9 @@ var AccountPendingVerification = "Your account has not been verified yet!"
 
 //AccountVerificationSuccess ...
 var AccountVerificationSuccess = "Account verification successful!"
+
+//NoRecord ...
+var NoRecord = "No record found!"
+
+//SettingsFetched ...
+var SettingsFetched = "Site Settings Fetched Successfully!"
