@@ -33,10 +33,10 @@ var InfoSenderEmail = "info@zouq.cx"
 var ServicesSenderEmail = "services@zouq.cx"
 
 //VerificationURL ...
-var VerificationURL = BaseURL + "/verify?u="
+var VerificationURL = BaseURL + "/verify-account.html?u="
 
 //RecoveryURL ...
-var RecoveryURL = BaseURL + "/change-password?u="
+var RecoveryURL = BaseURL + "/change-password.html?u="
 
 //CantSendEmail ...
 var CantSendEmail = "Can't send email. An error occurred!"
