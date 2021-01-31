@@ -77,8 +77,7 @@ func GetUsers(recipient string, s *models.Server) ([]validations.User, error) {
 	} else if recipient == "admin" {
 		filter = bson.M{"status": "admin"}
 	} else {
-		filter = bson.M{"status": "admin"}
-		// filter = bson.M{"status": bson.M{"$ne": "admin"}}
+		filter = bson.M{"status": bson.M{"$ne": "admin"}}
 	}
 
 	cursor, err := s.Coll.Find(context.TODO(), filter)
