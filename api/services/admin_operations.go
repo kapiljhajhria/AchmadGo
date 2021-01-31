@@ -37,7 +37,7 @@ func SendNewsLetterEmail(s *models.Server) error {
 		return resp.JSON(s.Resp)
 	}
 
-	// go func() {
+	go func() {
 		for _, user := range usersArr {
 			utils.SendEmail(&models.Email{
 				ReceiverEmail: user.Email,
@@ -53,7 +53,7 @@ func SendNewsLetterEmail(s *models.Server) error {
 				},
 			})
 		}
-	// }()
+	}()
 
 	s.Resp.Ctx = s.Ctx
 	s.Resp.StatusCd = 200
@@ -77,7 +77,8 @@ func GetUsers(recipient string, s *models.Server) ([]validations.User, error) {
 	} else if recipient == "admin" {
 		filter = bson.M{"status": "admin"}
 	} else {
-		filter = bson.M{"status": bson.M{"$ne": "admin"}}
+		filter = bson.M{"status": "admin"}
+		// filter = bson.M{"status": bson.M{"$ne": "admin"}}
 	}
 
 	cursor, err := s.Coll.Find(context.TODO(), filter)

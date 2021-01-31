@@ -22,11 +22,11 @@ func SendEmail(email *models.Email) error{
 	content, _ := ReadFile(email.FileName)
 	
 	htmlContent := header + Replacer(content, email.Replacer) + footer
-	message := mail.NewSingleEmail(from, subject, to, "", htmlContent)
+	message := mail.NewSingleEmail(from, subject, to, "", "<div>htm</div>")
 	client := sendgrid.NewSendClient(config.Config("SENDGRID_API_KEY"))
 	response, err := client.Send(message)
 	if err != nil {
-		fmt.Println("Error Sending Email:", err)
+		fmt.Println("Error Sending Email:", err,htmlContent)
 	} else {
 		fmt.Println("Email StatusCode:", response.StatusCode)
 	}
