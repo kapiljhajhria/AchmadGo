@@ -21,7 +21,7 @@ func AdminOperationsController(s *models.Server) {
 
 	collection := db.GetCollection(s, config.Config("USERS"))
 
-	s.App.Get(config.GetAPIBase()+"admin/sendnewsletter",
+	s.App.Patch(config.GetAPIBase()+"admin/sendnewsletter",
 		func(c *fiber.Ctx) error {
 			s.Ctx = c
 			s.Resp = resp
