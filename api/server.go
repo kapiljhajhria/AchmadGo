@@ -5,7 +5,6 @@ import (
 	"github.com/samhj/AchmadGo/api/config"
 	"github.com/samhj/AchmadGo/api/config/db"
 	middlewares "github.com/samhj/AchmadGo/api/middlewares"
-
 	models "github.com/samhj/AchmadGo/api/models"
 	router "github.com/samhj/AchmadGo/api/routes"
 )
