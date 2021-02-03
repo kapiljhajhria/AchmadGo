@@ -4,7 +4,6 @@ go 1.15
 
 require (
 	github.com/andybalholm/brotli v1.0.1 // indirect
-	github.com/antoniodipinto/ikisocket v0.0.0-20201215160819-82239990c0ab
 	github.com/badoux/checkmail v1.2.1
 	github.com/cespare/reflex v0.3.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
