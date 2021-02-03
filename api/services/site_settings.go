@@ -3,9 +3,8 @@ package services
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 
-	"github.com/antoniodipinto/ikisocket"
+	// "github.com/antoniodipinto/ikisocket"
 	"github.com/samhj/AchmadGo/api/config"
 	"github.com/samhj/AchmadGo/api/models"
 	resp "github.com/samhj/AchmadGo/api/responses"
@@ -81,9 +80,9 @@ func UpdateSiteSettings(s *models.Server) error {
 	s.Resp.Data = res
 	s.Resp.Succ = true
 
-	ikisocket.New(func(kws *ikisocket.Websocket) {
-		kws.Emit([]byte(fmt.Sprintf("%v", s.Resp)))
-	})
+	// ikisocket.New(func(kws *ikisocket.Websocket) {
+	// 	kws.Emit([]byte(fmt.Sprintf("%v", s.Resp)))
+	// })
 
 	return resp.JSON(s.Resp)
 }
