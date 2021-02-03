@@ -12,7 +12,6 @@ require (
 	github.com/go-redis/redis/v8 v8.4.8
 	github.com/gofiber/cors v0.2.2
 	github.com/gofiber/fiber/v2 v2.4.1
-	github.com/gofiber/websocket/v2 v2.0.2
 	github.com/gomodule/redigo v1.8.3
 	github.com/google/uuid v1.1.4
 	github.com/joho/godotenv v1.3.0
