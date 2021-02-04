@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"strings"
+	"time"
 
 	"github.com/samhj/AchmadGo/api/auth"
 	"github.com/samhj/AchmadGo/api/config"
@@ -99,6 +100,7 @@ func Register(s *models.Server) error {
 	hashPass, _ := config.Hash(userPassword)
 	user.Password = string(hashPass)
 	user.Settings = models.UserSettings{true, true, false, true, false}
+	user.CreatedAt = time.Now()
 
 	result, err := s.Coll.InsertOne(context.TODO(), user)
 	if err != nil {

@@ -31,6 +31,7 @@ func SendNewsLetterEmail(s *models.Server) error {
 	if err != nil {
 		//user does not exist
 		s.Resp.Data = nil
+		s.Resp.StatusCd = 400
 		s.Resp.Succ = false
 		s.Resp.Ctx = s.Ctx
 		s.Resp.Msg = "Error: " + err.Error()

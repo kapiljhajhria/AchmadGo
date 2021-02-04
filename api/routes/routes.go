@@ -12,4 +12,5 @@ func SetupRoutes(s *models.Server) {
 	controllers.UserController(s)
 	controllers.SettingsController(s)
 	controllers.AdminOperationsController(s)
+	controllers.BlogsController(s)
 }
