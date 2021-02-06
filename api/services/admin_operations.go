@@ -96,16 +96,13 @@ func DeleteUser(s *models.Server) error {
 		s.Resp.Msg = "Error: " + err.Error()
 		return resp.JSON(s.Resp)
 	}
-	var usersArr []models.User
 
-	go func() {
-		usersArr, _ := GetUsers("all", s)
-		for k := range usersArr {
-			usersArr[k].DOB = ""
-			usersArr[k].Token = ""
-			usersArr[k].Password = ""
-		}
-	}()
+	usersArr, _ := GetUsers("all", s)
+	for k := range usersArr {
+		usersArr[k].DOB = ""
+		usersArr[k].Token = ""
+		usersArr[k].Password = ""
+	}
 
 	res, _ := json.Marshal(usersArr)
 	//return response
