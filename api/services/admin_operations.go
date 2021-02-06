@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"encoding/json"
 	"strings"
 
 	"github.com/samhj/AchmadGo/api/config"
@@ -61,6 +62,37 @@ func SendNewsLetterEmail(s *models.Server) error {
 	s.Resp.Msg = "Newsletter Sent Successfully!"
 	s.Resp.Data = nil
 	s.Resp.Succ = true
+	return resp.JSON(s.Resp)
+}
+
+//GetAllUsers ...
+func GetAllUsers(s *models.Server) error {
+	usersArr, err := GetUsers("all", s)
+
+	if err != nil {
+		//user does not exist
+		s.Resp.Data = nil
+		s.Resp.StatusCd = 400
+		s.Resp.Succ = false
+		s.Resp.Ctx = s.Ctx
+		s.Resp.Msg = "Error: " + err.Error()
+		return resp.JSON(s.Resp)
+	}
+
+	for k := range usersArr{
+		usersArr[k].DOB = ""
+		usersArr[k].Token = ""
+		usersArr[k].Password = ""
+	}
+
+	res, _ := json.Marshal(usersArr)
+	//return response
+	s.Resp.Ctx = s.Ctx
+	s.Resp.StatusCd = 200
+	s.Resp.Msg = "Users Fetched Successfully!"
+	s.Resp.Data = res
+	s.Resp.Succ = true
+
 	return resp.JSON(s.Resp)
 }
 

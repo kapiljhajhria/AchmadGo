@@ -29,5 +29,13 @@ func AdminOperationsController(s *models.Server) {
 			return services.SendNewsLetterEmail(s)
 
 		})
+	s.App.Get(config.GetAPIBase()+"users/getAll",
+		func(c *fiber.Ctx) error {
+			s.Ctx = c
+			s.Resp = resp
+			s.Coll = collection
+			return services.GetAllUsers(s)
+
+		})
 
 }
