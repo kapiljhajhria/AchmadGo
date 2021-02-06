@@ -146,6 +146,60 @@ func GetAllUsers(s *models.Server) error {
 	return resp.JSON(s.Resp)
 }
 
+//UpdateSingleUser ...
+func UpdateSingleUser(s *models.Server) error {
+	//create a new instance of the User struct as user
+	user := validations.User{}
+	s.Ctx.BodyParser(&user)
+	user.Prepare()
+
+	objectID, err := primitive.ObjectIDFromHex(user.ID)
+	if err != nil {
+		s.Resp.Data = nil
+		s.Resp.Succ = false
+		s.Resp.StatusCd = 400
+		s.Resp.Ctx = s.Ctx
+		s.Resp.Msg = config.InvalidID
+		return resp.JSON(s.Resp)
+	}
+
+	filter := bson.M{"_id": objectID}
+
+	//remove the user ID from the user struct
+	user.ID = ""
+
+	update := bson.M{
+		"$set": &user,
+	}
+
+	_, err = s.Coll.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		s.Resp.Data = nil
+		s.Resp.Succ = false
+		s.Resp.StatusCd = 400
+		s.Resp.Ctx = s.Ctx
+		s.Resp.Msg = config.ErrorMSG + " " + err.Error()
+		return resp.JSON(s.Resp)
+	}
+
+	usersArr, _ := GetUsers("all", s)
+	for k := range usersArr {
+		usersArr[k].DOB = ""
+		usersArr[k].Token = ""
+		usersArr[k].Password = ""
+	}
+
+	res, _ := json.Marshal(usersArr)
+	//return response
+	s.Resp.Ctx = s.Ctx
+	s.Resp.StatusCd = 200
+	s.Resp.Msg = "User Updated Successfully!"
+	s.Resp.Data = res
+	s.Resp.Succ = true
+
+	return resp.JSON(s.Resp)
+}
+
 //GetUsers ...
 func GetUsers(recipient string, s *models.Server) ([]validations.User, error) {
 	var users []validations.User

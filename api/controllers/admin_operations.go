@@ -47,4 +47,13 @@ func AdminOperationsController(s *models.Server) {
 
 		})
 
+		s.App.Patch(config.GetAPIBase()+"users/updateUser",
+		func(c *fiber.Ctx) error {
+			s.Ctx = c
+			s.Resp = resp
+			s.Coll = collection
+			return services.UpdateSingleUser(s)
+
+		})
+
 }
