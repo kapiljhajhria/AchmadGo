@@ -11,6 +11,7 @@ import (
 	"github.com/samhj/AchmadGo/api/utils"
 	"github.com/samhj/AchmadGo/api/validations"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 //NewsLetter ...
@@ -65,6 +66,55 @@ func SendNewsLetterEmail(s *models.Server) error {
 	return resp.JSON(s.Resp)
 }
 
+//DeleteUser ...
+func DeleteUser(s *models.Server) error {
+
+	//create a new instance of the User struct as user
+	user := validations.User{}
+	//populate user with the data in the body of the request.
+	s.Ctx.BodyParser(&user)
+
+	objectID, err := primitive.ObjectIDFromHex(user.ID)
+	if err != nil {
+		s.Resp.Data = nil
+		s.Resp.Succ = false
+		s.Resp.StatusCd = 400
+		s.Resp.Ctx = s.Ctx
+		s.Resp.Msg = config.InvalidID
+		return resp.JSON(s.Resp)
+	}
+
+	filter := bson.M{"_id": objectID}
+
+	_, err = s.Coll.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		//user does not exist
+		s.Resp.Data = nil
+		s.Resp.StatusCd = 400
+		s.Resp.Succ = false
+		s.Resp.Ctx = s.Ctx
+		s.Resp.Msg = "Error: " + err.Error()
+		return resp.JSON(s.Resp)
+	}
+
+	usersArr, _ := GetUsers("all", s)
+	for k := range usersArr {
+		usersArr[k].DOB = ""
+		usersArr[k].Token = ""
+		usersArr[k].Password = ""
+	}
+
+	res, _ := json.Marshal(usersArr)
+	//return response
+	s.Resp.Ctx = s.Ctx
+	s.Resp.StatusCd = 200
+	s.Resp.Msg = "User Deleted Successfully!"
+	s.Resp.Data = res
+	s.Resp.Succ = true
+
+	return resp.JSON(s.Resp)
+}
+
 //GetAllUsers ...
 func GetAllUsers(s *models.Server) error {
 	usersArr, err := GetUsers("all", s)
@@ -79,7 +129,7 @@ func GetAllUsers(s *models.Server) error {
 		return resp.JSON(s.Resp)
 	}
 
-	for k := range usersArr{
+	for k := range usersArr {
 		usersArr[k].DOB = ""
 		usersArr[k].Token = ""
 		usersArr[k].Password = ""

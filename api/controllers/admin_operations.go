@@ -38,4 +38,13 @@ func AdminOperationsController(s *models.Server) {
 
 		})
 
+	s.App.Delete(config.GetAPIBase()+"users/deleteUser",
+		func(c *fiber.Ctx) error {
+			s.Ctx = c
+			s.Resp = resp
+			s.Coll = collection
+			return services.DeleteUser(s)
+
+		})
+
 }
