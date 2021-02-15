@@ -9,7 +9,7 @@ import (
 //Blog ...
 type Blog struct {
 	Title     string             `bson:"title,omitempty" json:"title" xml:"title" form:"title"`
-	Image     string             `bson:"image,omitempty" json:"image" xml:"image" form:"image"`
+	// Image     string             `bson:"image,omitempty" json:"image" xml:"image" form:"image"`
 	Directory string             `bson:"directory,omitempty" json:"directory" xml:"directory" form:"directory"`
 	Content   string             `bson:"content,omitempty" json:"content" xml:"content" form:"content"`
 	AuthorID  primitive.ObjectID `bson:"author_id,omitempty" json:"author_id" xml:"author_id" form:"author_id"`
