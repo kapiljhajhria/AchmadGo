@@ -13,7 +13,8 @@ type Blog struct {
 	Content   string             `bson:"content,omitempty" json:"content" xml:"content" form:"content"`
 	AuthorID  primitive.ObjectID `bson:"author_id,omitempty" json:"author_id" xml:"author_id" form:"author_id"`
 	Image     string             `bson:"image,omitempty" json:"image" xml:"image" form:"image"`
+	Status     string             `bson:"status,omitempty" json:"status" xml:"status" form:"status"`
 	Author    User               `bson:"author,omitempty" json:"author" xml:"author" form:"author"`
-	CreatedAt time.Time          `json:"created_at" bson:"created_at,omitempty"`
-	UpdatedAt time.Time          `json:"updated_at" bson:"updated_at,omitempty"`
+	Published string          `json:"published" bson:"published,omitempty"`
+	LastUpdated string          `json:"last_updated" bson:"last_updated,omitempty"`
 }
