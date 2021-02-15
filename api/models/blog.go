@@ -6,7 +6,7 @@ import (
 
 //Blog ...
 type Blog struct {
-	ID       string             `bson:"_id,omitempty" json:"_id" xml:"_id" form:"_id"`
+	ID       string             `bson:"_id,omitempty" json:"blog_id" xml:"blog_id" form:"blog_id"`
 	Title       string             `bson:"title,omitempty" json:"title" xml:"title" form:"title"`
 	Directory   string             `bson:"directory,omitempty" json:"directory" xml:"directory" form:"directory"`
 	Content     string             `bson:"content,omitempty" json:"content" xml:"content" form:"content"`
