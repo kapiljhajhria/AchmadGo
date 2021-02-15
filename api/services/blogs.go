@@ -4,9 +4,11 @@ import (
 	"context"
 	"encoding/json"
 
+	"github.com/samhj/AchmadGo/api/config"
 	"github.com/samhj/AchmadGo/api/models"
 	resp "github.com/samhj/AchmadGo/api/responses"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -36,7 +38,7 @@ func GetBlogs(s *models.Server) error {
 		return resp.JSON(s.Resp)
 	}
 
-	for k,_ := range blogs{
+	for k, _ := range blogs {
 		blogs[k].Author.Email = ""
 		blogs[k].Author.DOB = ""
 		blogs[k].Author.Token = ""
@@ -50,5 +52,47 @@ func GetBlogs(s *models.Server) error {
 	s.Resp.Msg = "Blogs Fetched Successfully!"
 	s.Resp.Data = res
 	s.Resp.Succ = true
+	return resp.JSON(s.Resp)
+}
+
+//UpdateBlog ...
+func UpdateBlog(s *models.Server) error {
+	//create a new instance of the Blog struct as blog
+	blog := models.Blog{}
+	s.Ctx.BodyParser(&blog)
+
+	objectID, err := primitive.ObjectIDFromHex(blog.ID)
+	if err != nil {
+		s.Resp.Data = nil
+		s.Resp.Succ = false
+		s.Resp.StatusCd = 400
+		s.Resp.Ctx = s.Ctx
+		s.Resp.Msg = config.InvalidID
+		return resp.JSON(s.Resp)
+	}
+
+	filter := bson.M{"_id": objectID}
+
+	update := bson.M{
+		"$set": &blog,
+	}
+
+	_, err = s.Coll.UpdateOne(context.TODO(), filter, update)
+	if err != nil {
+		s.Resp.Data = nil
+		s.Resp.Succ = false
+		s.Resp.StatusCd = 400
+		s.Resp.Ctx = s.Ctx
+		s.Resp.Msg = config.ErrorMSG + " " + err.Error()
+		return resp.JSON(s.Resp)
+	}
+
+	//return response
+	s.Resp.Ctx = s.Ctx
+	s.Resp.StatusCd = 200
+	s.Resp.Msg = config.UpdateSuccess
+	s.Resp.Data = nil
+	s.Resp.Succ = true
+
 	return resp.JSON(s.Resp)
 }
