@@ -13,6 +13,6 @@ type Blog struct {
 	Image       string             `bson:"image,omitempty" json:"image" xml:"image" form:"image"`
 	Status      string             `bson:"status,omitempty" json:"status" xml:"status" form:"status"`
 	Author      User               `bson:"author,omitempty" json:"author" xml:"author" form:"author"`
-	Published   string             `json:"published" bson:"published,omitempty"`
+	PublishedAt   string             `json:"published_at" bson:"published_at,omitempty"`
 	LastUpdated string             `json:"last_updated" bson:"last_updated,omitempty"`
 }
