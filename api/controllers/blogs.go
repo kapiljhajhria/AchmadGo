@@ -29,7 +29,7 @@ func BlogsController(s *models.Server) {
 			return services.GetBlogs(s)
 
 		})
-	s.App.Get(config.GetAPIBase()+"blogs/updateSingle",
+	s.App.Patch(config.GetAPIBase()+"blogs/updateSingle",
 		func(c *fiber.Ctx) error {
 			s.Ctx = c
 			s.Resp = resp
