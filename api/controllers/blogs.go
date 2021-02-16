@@ -37,7 +37,7 @@ func BlogsController(s *models.Server) {
 			return services.UpdateBlog(s)
 
 		})
-	s.App.delete(config.GetAPIBase()+"blogs/deleteSingle",
+	s.App.Delete(config.GetAPIBase()+"blogs/deleteSingle",
 		func(c *fiber.Ctx) error {
 			s.Ctx = c
 			s.Resp = resp
