@@ -96,3 +96,43 @@ func UpdateBlog(s *models.Server) error {
 
 	return resp.JSON(s.Resp)
 }
+
+//DeleteBlog ...
+func DeleteBlog(s *models.Server) error{
+	//create a new instance of the Blog struct as blog
+	blog := models.Blog{}
+	//populate blog with the data in the body of the request.
+	s.Ctx.BodyParser(&blog)
+
+	objectID, err := primitive.ObjectIDFromHex(blog.ID)
+	if err != nil {
+		s.Resp.Data = nil
+		s.Resp.Succ = false
+		s.Resp.StatusCd = 400
+		s.Resp.Ctx = s.Ctx
+		s.Resp.Msg = config.InvalidID
+		return resp.JSON(s.Resp)
+	}
+
+	filter := bson.M{"_id": objectID}
+
+	_, err = s.Coll.DeleteOne(context.TODO(), filter)
+	if err != nil {
+		//blog does not exist
+		s.Resp.Data = nil
+		s.Resp.StatusCd = 400
+		s.Resp.Succ = false
+		s.Resp.Ctx = s.Ctx
+		s.Resp.Msg = "Error: " + err.Error()
+		return resp.JSON(s.Resp)
+	}
+
+	//return response
+	s.Resp.Ctx = s.Ctx
+	s.Resp.StatusCd = 200
+	s.Resp.Msg = "Blog Deleted Successfully!"
+	s.Resp.Data = nil
+	s.Resp.Succ = true
+
+	return resp.JSON(s.Resp)
+}
