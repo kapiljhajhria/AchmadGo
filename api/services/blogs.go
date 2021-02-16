@@ -73,6 +73,8 @@ func UpdateBlog(s *models.Server) error {
 
 	filter := bson.M{"_id": objectID}
 
+	blog.ID = ""
+
 	update := bson.M{
 		"$set": &blog,
 	}
