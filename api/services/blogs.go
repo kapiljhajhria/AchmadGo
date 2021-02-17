@@ -8,7 +8,6 @@ import (
 	"github.com/samhj/AchmadGo/api/models"
 	resp "github.com/samhj/AchmadGo/api/responses"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -69,7 +68,7 @@ func UpdateBlog(s *models.Server) error {
 		"$set": &blog,
 	}
 
-	_, err = s.Coll.UpdateOne(context.TODO(), filter, update)
+	_, err := s.Coll.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
 		s.Resp.Data = nil
 		s.Resp.Succ = false
@@ -98,7 +97,7 @@ func DeleteBlog(s *models.Server) error {
 
 	filter := bson.M{"_id": blog.ID}
 
-	_, err = s.Coll.DeleteOne(context.TODO(), filter)
+	_, err := s.Coll.DeleteOne(context.TODO(), filter)
 	if err != nil {
 		//blog does not exist
 		s.Resp.Data = nil
