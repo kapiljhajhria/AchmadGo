@@ -158,12 +158,11 @@ func AddBlog(s *models.Server) error {
 	}
 
 	//set blog ID
-	blog.ID = string(result.InsertedID.(primitive.ObjectID).Hex())
-
+	res, _ := json.Marshal(string(result.InsertedID.(primitive.ObjectID).Hex()))
 	s.Resp.Ctx = s.Ctx
 	s.Resp.StatusCd = 200
 	s.Resp.Msg = config.SignUpSuccess
-	s.Resp.Data = blog.ID
+	s.Resp.Data = res
 	s.Resp.Succ = true
 
 	//return response
