@@ -146,7 +146,7 @@ func AddBlog(s *models.Server) error {
 	//populate blog with the data in the body of the request.
 	s.Ctx.BodyParser(&blog)
 
-	result, err := s.Coll.InsertOne(context.TODO(), blog)
+	_, err := s.Coll.InsertOne(context.TODO(), blog)
 	if err != nil {
 		//failed to create blog
 		s.Resp.Data = nil
@@ -158,11 +158,10 @@ func AddBlog(s *models.Server) error {
 	}
 
 	//set blog ID
-	res, _ := json.Marshal(string(result.InsertedID.(primitive.ObjectID).Hex()))
 	s.Resp.Ctx = s.Ctx
 	s.Resp.StatusCd = 200
 	s.Resp.Msg = "Blog Created Successfully!"
-	s.Resp.Data = res
+	s.Resp.Data = nil
 	s.Resp.Succ = true
 
 	//return response
