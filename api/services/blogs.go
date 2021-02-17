@@ -161,7 +161,7 @@ func AddBlog(s *models.Server) error {
 	res, _ := json.Marshal(string(result.InsertedID.(primitive.ObjectID).Hex()))
 	s.Resp.Ctx = s.Ctx
 	s.Resp.StatusCd = 200
-	s.Resp.Msg = config.SignUpSuccess
+	s.Resp.Msg = "Blog Created Successfully!"
 	s.Resp.Data = res
 	s.Resp.Succ = true
 
