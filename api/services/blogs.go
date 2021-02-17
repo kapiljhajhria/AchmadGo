@@ -61,17 +61,7 @@ func UpdateBlog(s *models.Server) error {
 	blog := models.Blog{}
 	s.Ctx.BodyParser(&blog)
 
-	objectID, err := primitive.ObjectIDFromHex(blog.ID)
-	if err != nil {
-		s.Resp.Data = nil
-		s.Resp.Succ = false
-		s.Resp.StatusCd = 400
-		s.Resp.Ctx = s.Ctx
-		s.Resp.Msg = config.InvalidID
-		return resp.JSON(s.Resp)
-	}
-
-	filter := bson.M{"_id": objectID}
+	filter := bson.M{"_id": blog.ID}
 
 	blog.ID = ""
 
@@ -106,17 +96,7 @@ func DeleteBlog(s *models.Server) error {
 	//populate blog with the data in the body of the request.
 	s.Ctx.BodyParser(&blog)
 
-	objectID, err := primitive.ObjectIDFromHex(blog.ID)
-	if err != nil {
-		s.Resp.Data = nil
-		s.Resp.Succ = false
-		s.Resp.StatusCd = 400
-		s.Resp.Ctx = s.Ctx
-		s.Resp.Msg = config.InvalidID
-		return resp.JSON(s.Resp)
-	}
-
-	filter := bson.M{"_id": objectID}
+	filter := bson.M{"_id": blog.ID}
 
 	_, err = s.Coll.DeleteOne(context.TODO(), filter)
 	if err != nil {
