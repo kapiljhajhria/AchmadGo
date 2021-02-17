@@ -46,4 +46,13 @@ func BlogsController(s *models.Server) {
 
 		})
 
+	s.App.Patch(config.GetAPIBase()+"blogs/addSingle",
+		func(c *fiber.Ctx) error {
+			s.Ctx = c
+			s.Resp = resp
+			s.Coll = collection
+			return services.AddBlog(s)
+
+		})
+
 }

@@ -100,7 +100,7 @@ func UpdateBlog(s *models.Server) error {
 }
 
 //DeleteBlog ...
-func DeleteBlog(s *models.Server) error{
+func DeleteBlog(s *models.Server) error {
 	//create a new instance of the Blog struct as blog
 	blog := models.Blog{}
 	//populate blog with the data in the body of the request.
@@ -136,5 +136,36 @@ func DeleteBlog(s *models.Server) error{
 	s.Resp.Data = nil
 	s.Resp.Succ = true
 
+	return resp.JSON(s.Resp)
+}
+
+//AddBlog ...
+func AddBlog(s *models.Server) error {
+	//create a new instance of the Blog struct as blog
+	blog := models.Blog{}
+	//populate blog with the data in the body of the request.
+	s.Ctx.BodyParser(&blog)
+
+	result, err := s.Coll.InsertOne(context.TODO(), blog)
+	if err != nil {
+		//failed to create blog
+		s.Resp.Data = nil
+		s.Resp.Succ = false
+		s.Resp.StatusCd = 400
+		s.Resp.Ctx = s.Ctx
+		s.Resp.Msg = "Failed To Create Blog At This Moment!"
+		return resp.JSON(s.Resp)
+	}
+
+	//set blog ID
+	blog.ID = string(result.InsertedID.(primitive.ObjectID).Hex())
+
+	s.Resp.Ctx = s.Ctx
+	s.Resp.StatusCd = 200
+	s.Resp.Msg = config.SignUpSuccess
+	s.Resp.Data = blog.ID
+	s.Resp.Succ = true
+
+	//return response
 	return resp.JSON(s.Resp)
 }
