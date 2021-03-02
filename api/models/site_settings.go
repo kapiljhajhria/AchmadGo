@@ -3,8 +3,9 @@ package models
 //Magazine ...
 type Magazine struct {
 	Title      string `bson:"title" json:"title" xml:"title" form:"title"`
-	Image   string `bson:"image" json:"image" xml:"image" form:"image"`
+	Image   string `bson:"image,omitempty" json:"image" xml:"image" form:"image"`
 	MagID string`bson:"magId" json:"magId" xml:"magId" form:"magId"`
+	Directories   []string `bson:"directories,omitempty" json:"directories" xml:"directories" form:"directories"`
 }
 
 //SiteSettings ...
