@@ -6,7 +6,7 @@ type Magazine struct {
 	Image   string `bson:"image,omitempty" json:"image" xml:"image" form:"image"`
 	MagID string`bson:"magId,omitempty" json:"magId" xml:"magId" form:"magId"`
 	Directories   []string `bson:"directories,omitempty" json:"directories" xml:"directories" form:"directories"`
-	Author 	 []string `bson:"author,omitempty" json:"author" xml:"author" form:"author"`
+	Author 	 string `bson:"author,omitempty" json:"author" xml:"author" form:"author"`
 }
 
 //SiteSettings ...
