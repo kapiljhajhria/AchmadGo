@@ -78,7 +78,7 @@ func UpdateSiteSettings(s *models.Server) error {
 				if updateData.Type == "delete" {
 					newMagsList := removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
 					if len(newMagsList) ==0 {
-						settings.Magazines = []models.Magazine{}
+						settings = sOBJ
 					}else{
 						settings.Magazines = newMagsList
 					}
