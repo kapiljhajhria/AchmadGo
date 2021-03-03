@@ -14,6 +14,12 @@ import (
 
 const settingsID = "600dc081051e9b3081b37ca6"
 
+//UpdateData ...
+type UpdateData struct {
+	MgID string `json:"mgID" xml:"mgID" form:"mgID"`
+	Type  string `json:"type" xml:"type" form:"type"`
+}
+
 //GetSiteSettings ...
 func GetSiteSettings(s *models.Server) error {
 
@@ -53,11 +59,30 @@ func UpdateSiteSettings(s *models.Server) error {
 		return resp.JSON(s.Resp)
 	}
 
-	// r := len(settings.Magazines);
-	
-	// if r == 0 {
-	// 	settings.Magazines = []models.Magazine{}
-	// }
+	r := len(settings.Magazines)
+
+	if r == 0 {
+		//i.e no magazine was attached
+		updateData := new(UpdateData)
+		//populate updateData with the data in the body of the request.
+		err := s.Ctx.BodyParser(updateData)
+
+		if err == nil {
+
+			sOBJ, _ := GetSettings(s.Coll)
+
+			if updateData.Type == "delete" {
+				newMagsList := removeObjByPropVal(sOBJ.Magazines,updateData.MgID)
+				settings.Magazines = newMagsList
+			} else if updateData.Type == "update" {
+
+			} else {
+
+			}
+		}
+
+		// settings.Magazines = []models.Magazine{}
+	}
 
 	filter := bson.M{"_id": objectID}
 
@@ -90,6 +115,20 @@ func UpdateSiteSettings(s *models.Server) error {
 	// })
 
 	return resp.JSON(s.Resp)
+}
+
+func removeObjByPropVal(mags []models.Magazine, magID string) ([]models.Magazine) {
+	l := len(mags) - 1
+
+	newMagsList := make([]models.Magazine, l)
+
+	for i, mag := range mags {
+        if mag.MagID != magID {
+            newMagsList = append(newMagsList, mags[i])
+        }
+    }
+
+	return newMagsList
 }
 
 //GetSettings ...
