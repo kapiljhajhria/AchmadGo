@@ -16,8 +16,10 @@ const settingsID = "600dc081051e9b3081b37ca6"
 
 //UpdateData ...
 type UpdateData struct {
-	MgID string `json:"mgID" xml:"mgID" form:"mgID"`
-	Type  string `json:"type" xml:"type" form:"type"`
+	MgID     string          `json:"mgID" xml:"mgID" form:"mgID"`
+	Type     string          `json:"type" xml:"type" form:"type"`
+	From     string          `json:"from" xml:"from" form:"from"`
+	Magazine models.Magazine `json:"mg" xml:"mg" form:"mg"`
 }
 
 //GetSiteSettings ...
@@ -71,17 +73,23 @@ func UpdateSiteSettings(s *models.Server) error {
 
 			sOBJ, _ := GetSettings(s.Coll)
 
-			if updateData.Type == "delete" {
-				newMagsList := removeObjByPropVal(sOBJ.Magazines,updateData.MgID)
-				settings.Magazines = newMagsList
-			} else if updateData.Type == "update" {
+			if updateData.From == "magazine" {
 
-			} else {
+				if updateData.Type == "delete" {
+					newMagsList := removeObjByPropVal(sOBJ.Magazines, updateData.MgID)
+					settings.Magazines = newMagsList
+				} else if updateData.Type == "update" {
+					newMagsList := removeObjByPropVal(sOBJ.Magazines, updateData.MgID)
+					newMagsList = append(newMagsList, updateData.Magazine)
+					settings.Magazines = newMagsList
+				} else if updateData.Type == "add" {
+					newMagsList := append(sOBJ.Magazines, updateData.Magazine)
+					settings.Magazines = newMagsList
+				} else {
 
+				}
 			}
 		}
-
-		// settings.Magazines = []models.Magazine{}
 	}
 
 	filter := bson.M{"_id": objectID}
@@ -117,16 +125,15 @@ func UpdateSiteSettings(s *models.Server) error {
 	return resp.JSON(s.Resp)
 }
 
-func removeObjByPropVal(mags []models.Magazine, magID string) ([]models.Magazine) {
-	// l := len(mags) - 1
+func removeObjByPropVal(mags []models.Magazine, magID string) []models.Magazine {
 
 	newMagsList := []models.Magazine{}
 
 	for i, mag := range mags {
-        if mag.MagID != magID {
-            newMagsList = append(newMagsList, mags[i])
-        }
-    }
+		if mag.MagID != magID {
+			newMagsList = append(newMagsList, mags[i])
+		}
+	}
 
 	return newMagsList
 }
