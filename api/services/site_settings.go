@@ -76,10 +76,10 @@ func UpdateSiteSettings(s *models.Server) error {
 			if updateData.From == "magazine" {
 
 				if updateData.Type == "delete" {
-					newMagsList := removeObjByPropVal(sOBJ.Magazines, updateData.MgID)
+					newMagsList := removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
 					settings.Magazines = newMagsList
 				} else if updateData.Type == "update" {
-					newMagsList := removeObjByPropVal(sOBJ.Magazines, updateData.MgID)
+					newMagsList := removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
 					newMagsList = append(newMagsList, updateData.Magazine)
 					settings.Magazines = newMagsList
 				} else if updateData.Type == "add" {
@@ -125,7 +125,7 @@ func UpdateSiteSettings(s *models.Server) error {
 	return resp.JSON(s.Resp)
 }
 
-func removeObjByPropVal(mags []models.Magazine, magID string) []models.Magazine {
+func removeMagazineObjByPropVal(mags []models.Magazine, magID string) []models.Magazine {
 
 	newMagsList := []models.Magazine{}
 
