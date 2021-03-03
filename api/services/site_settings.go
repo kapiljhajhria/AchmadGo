@@ -124,7 +124,7 @@ func removeObjByPropVal(mags []models.Magazine, magID string) ([]models.Magazine
 
 	for i, mag := range mags {
         if mag.MagID != magID {
-            newMagsList = append(newMagsList, mags[i])
+            append(newMagsList, mags[i])
         }
     }
 
