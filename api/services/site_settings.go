@@ -53,8 +53,10 @@ func UpdateSiteSettings(s *models.Server) error {
 		return resp.JSON(s.Resp)
 	}
 
-	if(!settings.Magazine){
-		settings.Magazine = nil
+	r := len(settings.Magazines);
+	
+	if r == 0 {
+		settings.Magazines = nil
 	}
 
 	filter := bson.M{"_id": objectID}
