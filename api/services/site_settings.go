@@ -118,13 +118,13 @@ func UpdateSiteSettings(s *models.Server) error {
 }
 
 func removeObjByPropVal(mags []models.Magazine, magID string) ([]models.Magazine) {
-	l := len(mags) - 1
+	// l := len(mags) - 1
 
-	newMagsList := make([]models.Magazine, l)
+	newMagsList := []models.Magazine{}
 
 	for i, mag := range mags {
         if mag.MagID != magID {
-            append(newMagsList, mags[i])
+            newMagsList = append(newMagsList, mags[i])
         }
     }
 
