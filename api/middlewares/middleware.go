@@ -20,13 +20,13 @@ func AppMiddleWares(s *models.Server) {
 	UserValidators(s)
 
 	//cache some requests like site settings etc.
-	s.App.Use("/api/sitesettings/getAll", cache.New(cache.Config{
-		Next: func(c *fiber.Ctx) bool {
-			return c.Query("refresh") == "true"
-		},
-		Expiration:   10 * time.Minute,
-		CacheControl: true,
-	}))
+	// s.App.Use("/api/sitesettings/getAll", cache.New(cache.Config{
+	// 	Next: func(c *fiber.Ctx) bool {
+	// 		return c.Query("refresh") == "true"
+	// 	},
+	// 	Expiration:   10 * time.Minute,
+	// 	CacheControl: true,
+	// }))
 
 	// s.App.Add("/api",router.SetupRoutes(sesrver))
 
