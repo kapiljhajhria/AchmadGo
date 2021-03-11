@@ -1,12 +1,19 @@
 package models
 
+//MagAuthor
+type MagAuthor struct{
+	UserID string `bson:"user_id,omitempty" json:"user_id" xml:"user_id" form:"user_id"`
+	Status string `bson:"status,omitempty" json:"status" xml:"status" form:"status"`
+	Role string `bson:"role,omitempty" json:"role" xml:"role" form:"role"`
+}
+
 //Magazine ...
 type Magazine struct {
 	Title      string `bson:"title,omitempty" json:"title" xml:"title" form:"title"`
 	Image   string `bson:"image,omitempty" json:"image" xml:"image" form:"image"`
 	MagID string`bson:"magId,omitempty" json:"magId" xml:"magId" form:"magId"`
 	Directories   []string `bson:"directories,omitempty" json:"directories" xml:"directories" form:"directories"`
-	Author 	 string `bson:"author,omitempty" json:"author" xml:"author" form:"author"`
+	Author 	 []MagAuthor `bson:"authors" json:"authors" xml:"authors" form:"authors"`
 }
 
 //SiteSettings ...
