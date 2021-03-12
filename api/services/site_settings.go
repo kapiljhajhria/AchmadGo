@@ -141,21 +141,29 @@ func GetSettings(s *models.Server) (models.SiteSettings, error) {
 	newS.Coll = s.UsersColl
 
 	if len(mags) > 0 {
-		for _, mag := range mags {
+		for i, mag := range mags {
 
 			if len(mag.Authors) > 0 {
 
-				for _, author := range mag.Authors {
+				for i, author := range mag.Authors {
 					objectID, _ := primitive.ObjectIDFromHex(author.UserID)
 
 					filter := bson.M{"_id": objectID}
 
 					user, err := GetUser(filter, newS)
 
+				// 	userOBJ := models.User{user.ID,user.FullName,user.ProfileImage,
+				// 	user.Email,user.Gender,user.DOB,user.Country,
+				// "",user.Settings,user.Status,user.IsVerified,"",user.CreatedAt}
+
+				// 	fmt.Println(userOBJ)
+
 					if err == nil {
-						author.Contributor = models.User(user)
+						author.UserData = models.User(user)
 					}
+					mag.Authors[i] = author
 				}
+				mags[i] = mag
 			}
 		}
 

@@ -3,7 +3,7 @@ package models
 //MagAuthor ...
 type MagAuthor struct {
 	UserID      string           `bson:"user_id,omitempty" json:"user_id" xml:"user_id" form:"user_id"`
-	Contributor User `bson:"contributor,omitempty" json:"contributor" xml:"contributor" form:"contributor"`
+	UserData User `bson:"user_data,omitempty" json:"user_data" xml:"user_data" form:"user_data"`
 	Status      string           `bson:"status,omitempty" json:"status" xml:"status" form:"status"`
 	Role        string           `bson:"role,omitempty" json:"role" xml:"role" form:"role"`
 }
