@@ -8,7 +8,6 @@ import (
 	"github.com/samhj/AchmadGo/api/models"
 	resp "github.com/samhj/AchmadGo/api/responses"
 	"go.mongodb.org/mongo-driver/bson"
-	// "go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -49,16 +48,6 @@ func UpdateSiteSettings(s *models.Server) error {
 	settings := models.SiteSettings{}
 	s.Ctx.BodyParser(&settings)
 
-	// objectID, err := primitive.ObjectIDFromHex(settingsID)
-	// if err != nil {
-	// 	s.Resp.Data = nil
-	// 	s.Resp.Succ = false
-	// 	s.Resp.StatusCd = 400
-	// 	s.Resp.Ctx = s.Ctx
-	// 	s.Resp.Msg = config.InvalidID
-	// 	return resp.JSON(s.Resp)
-	// }
-
 	r := len(settings.Magazines)
 
 	if r == 0 {
@@ -94,8 +83,6 @@ func UpdateSiteSettings(s *models.Server) error {
 			}
 		}
 	}
-
-	// filter := bson.M{"_id": objectID}
 
 	update := bson.M{
 		"$set": &settings,
