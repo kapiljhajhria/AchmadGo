@@ -152,12 +152,6 @@ func GetSettings(s *models.Server) (models.SiteSettings, error) {
 
 					user, err := GetUser(filter, newS)
 
-				// 	userOBJ := models.User{user.ID,user.FullName,user.ProfileImage,
-				// 	user.Email,user.Gender,user.DOB,user.Country,
-				// "",user.Settings,user.Status,user.IsVerified,"",user.CreatedAt}
-
-				// 	fmt.Println(userOBJ)
-
 					if err == nil {
 						author.UserData = models.User(user)
 					}
