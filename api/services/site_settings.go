@@ -8,11 +8,9 @@ import (
 	"github.com/samhj/AchmadGo/api/models"
 	resp "github.com/samhj/AchmadGo/api/responses"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	// "go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
-
-const settingsID = "600dc081051e9b3081b37ca6"
 
 //UpdateData ...
 type UpdateData struct {
@@ -51,15 +49,15 @@ func UpdateSiteSettings(s *models.Server) error {
 	settings := models.SiteSettings{}
 	s.Ctx.BodyParser(&settings)
 
-	objectID, err := primitive.ObjectIDFromHex(settingsID)
-	if err != nil {
-		s.Resp.Data = nil
-		s.Resp.Succ = false
-		s.Resp.StatusCd = 400
-		s.Resp.Ctx = s.Ctx
-		s.Resp.Msg = config.InvalidID
-		return resp.JSON(s.Resp)
-	}
+	// objectID, err := primitive.ObjectIDFromHex(settingsID)
+	// if err != nil {
+	// 	s.Resp.Data = nil
+	// 	s.Resp.Succ = false
+	// 	s.Resp.StatusCd = 400
+	// 	s.Resp.Ctx = s.Ctx
+	// 	s.Resp.Msg = config.InvalidID
+	// 	return resp.JSON(s.Resp)
+	// }
 
 	r := len(settings.Magazines)
 
@@ -77,10 +75,10 @@ func UpdateSiteSettings(s *models.Server) error {
 
 				if updateData.Type == "delete" {
 					newMagsList := removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
-					if len(newMagsList) ==0 {
+					if len(newMagsList) == 0 {
 						sOBJ.Magazines = newMagsList
 						settings = sOBJ
-					}else{
+					} else {
 						settings.Magazines = newMagsList
 					}
 				} else if updateData.Type == "update" {
@@ -97,13 +95,13 @@ func UpdateSiteSettings(s *models.Server) error {
 		}
 	}
 
-	filter := bson.M{"_id": objectID}
+	// filter := bson.M{"_id": objectID}
 
 	update := bson.M{
 		"$set": &settings,
 	}
 
-	_, err = s.Coll.UpdateOne(context.TODO(), filter, update)
+	_, err := s.Coll.UpdateOne(context.TODO(), bson.M{}, update)
 	if err != nil {
 		s.Resp.Data = nil
 		s.Resp.Succ = false
@@ -146,13 +144,9 @@ func removeMagazineObjByPropVal(mags []models.Magazine, magID string) []models.M
 //GetSettings ...
 func GetSettings(coll *mongo.Collection) (models.SiteSettings, error) {
 
-	objectID, _ := primitive.ObjectIDFromHex(settingsID)
-
-	filter := bson.M{"_id": objectID}
-
 	var settingsObj models.SiteSettings
 
-	err := coll.FindOne(context.TODO(), filter).Decode(&settingsObj)
+	err := coll.FindOne(context.TODO(), bson.M{}).Decode(&settingsObj)
 
 	return settingsObj, err
 }
