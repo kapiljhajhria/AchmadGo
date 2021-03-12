@@ -153,7 +153,10 @@ func GetSettings(s *models.Server) (models.SiteSettings, error) {
 					user, err := GetUser(filter, newS)
 
 					if err == nil {
+						//copy data from validations.User into models.User
+						//using models.User(user)
 						author.UserData = models.User(user)
+						author.UserData.Password = ""
 					}
 					mag.Authors[i] = author
 				}
