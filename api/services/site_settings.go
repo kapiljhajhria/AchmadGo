@@ -8,7 +8,7 @@ import (
 	"github.com/samhj/AchmadGo/api/models"
 	resp "github.com/samhj/AchmadGo/api/responses"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 //UpdateData ...
@@ -22,7 +22,7 @@ type UpdateData struct {
 //GetSiteSettings ...
 func GetSiteSettings(s *models.Server) error {
 
-	settingsObj, err := GetSettings(s.Coll)
+	settingsObj, err := GetSettings(s)
 	if err != nil {
 		s.Resp.Data = nil
 		s.Resp.Succ = false
@@ -58,7 +58,7 @@ func UpdateSiteSettings(s *models.Server) error {
 
 		if err == nil {
 
-			sOBJ, _ := GetSettings(s.Coll)
+			sOBJ, _ := GetSettings(s)
 
 			if updateData.From == "magazine" {
 
@@ -98,7 +98,7 @@ func UpdateSiteSettings(s *models.Server) error {
 		return resp.JSON(s.Resp)
 	}
 
-	settingsObj, _ := GetSettings(s.Coll)
+	settingsObj, _ := GetSettings(s)
 
 	res, _ := json.Marshal(settingsObj)
 	//return response
@@ -128,12 +128,39 @@ func removeMagazineObjByPropVal(mags []models.Magazine, magID string) []models.M
 	return newMagsList
 }
 
-//GetSettings ...
-func GetSettings(coll *mongo.Collection) (models.SiteSettings, error) {
+//GetSettings ... contributor
+func GetSettings(s *models.Server) (models.SiteSettings, error) {
 
 	var settingsObj models.SiteSettings
 
-	err := coll.FindOne(context.TODO(), bson.M{}).Decode(&settingsObj)
+	err := s.Coll.FindOne(context.TODO(), bson.M{}).Decode(&settingsObj)
+
+	mags := settingsObj.Magazines
+
+	newS := s
+	newS.Coll = s.UsersColl
+
+	if len(mags) > 0 {
+		for _, mag := range mags {
+
+			if len(mag.Authors) > 0 {
+
+				for _, author := range mag.Authors {
+					objectID, _ := primitive.ObjectIDFromHex(author.UserID)
+
+					filter := bson.M{"_id": objectID}
+
+					user, err := GetUser(filter, newS)
+
+					if err == nil {
+						author.Contributor = models.User(user)
+					}
+				}
+			}
+		}
+
+		settingsObj.Magazines = mags
+	}
 
 	return settingsObj, err
 }

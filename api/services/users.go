@@ -33,7 +33,7 @@ func Login(s *models.Server) error {
 	filter := bson.M{"email": user.Email}
 
 	//check if user exist
-	user, err := GetUser(user, filter, s)
+	user, err := GetUser(filter, s)
 	if err != nil {
 		//user does not exist
 		s.Resp.Data = nil
@@ -85,7 +85,7 @@ func Register(s *models.Server) error {
 
 	filter := bson.M{"email": user.Email}
 
-	_, err := GetUser(user, filter, s)
+	_, err := GetUser(filter, s)
 	if err == nil {
 		//user already exists
 		s.Resp.Data = nil
@@ -159,7 +159,7 @@ func ResendWelcomEmail(s *models.Server) error {
 
 	filter := bson.M{"email": user.Email}
 
-	user, err := GetUser(user, filter, s)
+	user, err := GetUser(filter, s)
 	if err != nil {
 		//user does not exist
 		s.Resp.Data = nil
@@ -208,7 +208,7 @@ func SendRecoveryEmail(s *models.Server) error {
 
 	filter := bson.M{"email": user.Email}
 
-	user, err := GetUser(user, filter, s)
+	user, err := GetUser(filter, s)
 	if err != nil {
 		//user does not exist
 		s.Resp.Data = nil
@@ -401,7 +401,7 @@ func IsUserVerified(s *models.Server) error {
 
 	filter := bson.M{"_id": objectID}
 
-	user, err = GetUser(user, filter, s)
+	user, err = GetUser(filter, s)
 	if err != nil {
 		s.Resp.Data = nil
 		s.Resp.Succ = false
@@ -477,7 +477,7 @@ func UpdateProfile(s *models.Server) error {
 }
 
 //GetUser ...
-func GetUser(user validations.User, filter bson.M, s *models.Server) (validations.User, error) {
+func GetUser(filter bson.M, s *models.Server) (validations.User, error) {
 
 	var userObj validations.User
 

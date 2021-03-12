@@ -12,5 +12,6 @@ type Server struct {
 	Ctx *fiber.Ctx
 	Resp *Response
 	Coll *mongo.Collection
+	UsersColl *mongo.Collection
 	TokenColl *mongo.Collection
 }

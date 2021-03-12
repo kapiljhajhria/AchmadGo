@@ -20,6 +20,7 @@ func SettingsController(s *models.Server) {
 	}
 
 	collection := db.GetCollection(s, config.Config("SETTINGS"))
+	usersColl := db.GetCollection(s, config.Config("USERS"))
 
 	//handle sign-up
 	s.App.Get(config.GetAPIBase()+"sitesettings/getAll",
@@ -27,16 +28,18 @@ func SettingsController(s *models.Server) {
 			s.Ctx = c
 			s.Resp = resp
 			s.Coll = collection
+			s.UsersColl = usersColl
 			return services.GetSiteSettings(s)
 		})
 
 	s.App.Patch(config.GetAPIBase()+"sitesettings/update",
-	func(c *fiber.Ctx) error {
-		s.Ctx = c
-		s.Resp = resp
-		s.Coll = collection
-		return services.UpdateSiteSettings(s)
+		func(c *fiber.Ctx) error {
+			s.Ctx = c
+			s.Resp = resp
+			s.Coll = collection
+			s.UsersColl = usersColl
+			return services.UpdateSiteSettings(s)
 
-	})
+		})
 
 }
