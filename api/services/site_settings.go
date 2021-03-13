@@ -77,10 +77,8 @@ func UpdateSiteSettings(s *models.Server) error {
 					newMagsList = append(newMagsList, updateData.Magazine)
 					settings.Magazines = newMagsList
 				} else if updateData.Type == "add" {
-					newMagsList = append(newMagsList, updateData.Magazine)
-					settings.Magazines = newMagsList
-				} else {
-
+					sOBJ.Magazines = append(sOBJ.Magazines, updateData.Magazine)
+					settings = sOBJ
 				}
 			}
 		}
