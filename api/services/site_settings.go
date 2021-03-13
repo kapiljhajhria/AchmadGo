@@ -85,8 +85,9 @@ func UpdateSiteSettings(s *models.Server) error {
 					settings.Magazines = newMagsList
 
 				} else if updateData.Type == "add" {
+					newMagsList = append(newMagsList, updateData.Magazine)
 
-					update = bson.M{"$push":bson.M{"magazines": bson.M{"$each": []models.Magazine{updateData.Magazine}}}}
+					update = bson.M{"$set": bson.M{"magazines":newMagsList}}
 
 				}
 			}
