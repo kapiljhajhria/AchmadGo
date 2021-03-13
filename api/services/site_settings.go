@@ -56,6 +56,8 @@ func UpdateSiteSettings(s *models.Server) error {
 		"$set": &settings,
 	}
 
+	sOBJ, _ := GetSettings(s)
+
 	if r == 0 {
 		//i.e no magazine was attached
 		updateData := new(UpdateData)
@@ -63,8 +65,6 @@ func UpdateSiteSettings(s *models.Server) error {
 		err := s.Ctx.BodyParser(updateData)
 
 		if err == nil {
-
-			sOBJ, _ := GetSettings(s)
 
 			if updateData.From == "magazine" {
 
@@ -82,8 +82,15 @@ func UpdateSiteSettings(s *models.Server) error {
 					update = bson.M{"$push": bson.M{"magazines": updateData.Magazine}}
 
 				}
+
+			} else {
+				settings.Magazines = sOBJ.Magazines
 			}
 		}
+
+	} else {
+
+		settings.Magazines = sOBJ.Magazines
 	}
 
 	_, err := s.Coll.UpdateOne(context.TODO(), bson.M{}, update)
