@@ -74,7 +74,7 @@ func UpdateSiteSettings(s *models.Server) error {
 					// 	sOBJ.Magazines = newMagsList
 					// 	settings = sOBJ
 					// } else {
-						settings.Magazines = newMagsList
+					settings.Magazines = newMagsList
 					// }
 
 				} else if updateData.Type == "update" {
