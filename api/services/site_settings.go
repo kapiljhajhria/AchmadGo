@@ -11,6 +11,8 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+const settingsID = "600dc081051e9b3081b37ca6"
+
 //UpdateData ...
 type UpdateData struct {
 	MgID     string          `json:"mgID" xml:"mgID" form:"mgID"`
@@ -50,13 +52,15 @@ func UpdateSiteSettings(s *models.Server) error {
 
 	r := len(settings.Magazines)
 
+	update := bson.M{
+		"$set": &settings,
+	}
+
 	if r == 0 {
 		//i.e no magazine was attached
 		updateData := new(UpdateData)
 		//populate updateData with the data in the body of the request.
 		err := s.Ctx.BodyParser(updateData)
-
-		// newMagsList := []models.Magazine{}
 
 		if err == nil {
 
@@ -65,24 +69,21 @@ func UpdateSiteSettings(s *models.Server) error {
 			if updateData.From == "magazine" {
 
 				if updateData.Type == "delete" {
-					newMagsList := removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
-					settings.Magazines = newMagsList
+
+					settings.Magazines = removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
+
 				} else if updateData.Type == "update" {
+
 					newMagsList := removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
 					newMagsList = append(newMagsList, updateData.Magazine)
 					settings.Magazines = newMagsList
+
 				} else if updateData.Type == "add" {
-					newMagsList := append(sOBJ.Magazines, updateData.Magazine)
-					settings.Magazines = newMagsList
-				} else {
+					update = bson.M{"$push": bson.M{"magazines": updateData.Magazine}}
 
 				}
 			}
 		}
-	}
-
-	update := bson.M{
-		"$set": &settings,
 	}
 
 	_, err := s.Coll.UpdateOne(context.TODO(), bson.M{}, update)
@@ -95,19 +96,12 @@ func UpdateSiteSettings(s *models.Server) error {
 		return resp.JSON(s.Resp)
 	}
 
-	settingsObj, _ := GetSettings(s)
-
-	res, _ := json.Marshal(settingsObj)
 	//return response
 	s.Resp.Ctx = s.Ctx
 	s.Resp.StatusCd = 200
 	s.Resp.Msg = config.UpdateSuccess
-	s.Resp.Data = res
+	s.Resp.Data = nil
 	s.Resp.Succ = true
-
-	// ikisocket.New(func(kws *ikisocket.Websocket) {
-	// 	kws.Emit([]byte(fmt.Sprintf("%v", s.Resp)))
-	// })
 
 	return resp.JSON(s.Resp)
 }
@@ -129,40 +123,46 @@ func removeMagazineObjByPropVal(mags []models.Magazine, magID string) []models.M
 func GetSettings(s *models.Server) (models.SiteSettings, error) {
 
 	var settingsObj models.SiteSettings
+	sChan := make(chan models.SiteSettings)
+
+	defer close(sChan)
 
 	err := s.Coll.FindOne(context.TODO(), bson.M{}).Decode(&settingsObj)
 
-	mags := settingsObj.Magazines
+	go func() {
 
-	newS := s
-	newS.Coll = s.UsersColl
+		mags := settingsObj.Magazines
 
-	if len(mags) > 0 {
-		for i, mag := range mags {
+		newS := s
+		newS.Coll = s.UsersColl
 
-			if len(mag.Authors) > 0 {
+		if len(mags) > 0 {
+			for i, mag := range mags {
 
-				for i, author := range mag.Authors {
-					objectID, _ := primitive.ObjectIDFromHex(author.UserID)
+				if len(mag.Authors) > 0 {
 
-					filter := bson.M{"_id": objectID}
+					for i, author := range mag.Authors {
+						objectID, _ := primitive.ObjectIDFromHex(author.UserID)
 
-					user, err := GetUser(filter, newS)
+						filter := bson.M{"_id": objectID}
 
-					if err == nil {
-						//copy data from validations.User into models.User
-						//using models.User(user)
-						author.UserData = models.User(user)
-						author.UserData.Password = ""
+						user, err := GetUser(filter, newS)
+
+						if err == nil {
+							//copy data from validations.User into models.User
+							//using models.User(user)
+							author.UserData = models.User(user)
+							author.UserData.Password = ""
+						}
+						mag.Authors[i] = author
 					}
-					mag.Authors[i] = author
+					mags[i] = mag
 				}
-				mags[i] = mag
 			}
-		}
 
-		settingsObj.Magazines = mags
-	}
+			settingsObj.Magazines = mags
+		}
+	}()
 
 	return settingsObj, err
 }

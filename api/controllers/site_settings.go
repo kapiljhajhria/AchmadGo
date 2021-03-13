@@ -32,7 +32,7 @@ func SettingsController(s *models.Server) {
 			return services.GetSiteSettings(s)
 		})
 
-	s.App.Patch(config.GetAPIBase()+"sitesettings/update",
+	s.App.Get(config.GetAPIBase()+"sitesettings/update",
 		func(c *fiber.Ctx) error {
 			s.Ctx = c
 			s.Resp = resp
