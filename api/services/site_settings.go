@@ -11,9 +11,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-//SettingsID ...
-// const SettingsID = "600dc081051e9b3081b37ca6"
-
 //UpdateData ...
 type UpdateData struct {
 	MgID     string          `json:"mgID" xml:"mgID" form:"mgID"`
@@ -69,13 +66,7 @@ func UpdateSiteSettings(s *models.Server) error {
 
 				if updateData.Type == "delete" {
 
-					newMagsList := removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
-					// if len(newMagsList) == 0 {
-					// 	sOBJ.Magazines = newMagsList
-					// 	settings = sOBJ
-					// } else {
-					settings.Magazines = newMagsList
-					// }
+					settings.Magazines = removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
 
 				} else if updateData.Type == "update" {
 
@@ -96,10 +87,6 @@ func UpdateSiteSettings(s *models.Server) error {
 	update := bson.M{
 		"$set": &settings,
 	}
-
-	// objectID, _ := primitive.ObjectIDFromHex(SettingsID)
-
-	// filter := bson.M{"_id": objectID}
 
 	_, err := s.Coll.UpdateOne(context.TODO(), bson.M{}, update)
 	if err != nil {
