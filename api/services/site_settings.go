@@ -136,7 +136,7 @@ func GetSettings(from string, s *models.Server) (models.SiteSettings, error) {
 
 	err := s.Coll.FindOne(context.TODO(), bson.M{}).Decode(&settingsObj)
 
-	getter := func() {
+	getter := func(from string) {
 		mags := settingsObj.Magazines
 
 		newS := s
@@ -172,12 +172,13 @@ func GetSettings(from string, s *models.Server) (models.SiteSettings, error) {
 
 	if from == "direct" {
 
-		getter()
+		getter(from)
 
-	} else {
+	} 
+	// else {
 
-		go getter()
-	}
+	// 	go getter(from)
+	// }
 
 	return settingsObj, err
 }
