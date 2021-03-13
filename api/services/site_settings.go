@@ -12,7 +12,7 @@ import (
 )
 
 //SettingsID ...
-const SettingsID = "600dc081051e9b3081b37ca6"
+// const SettingsID = "600dc081051e9b3081b37ca6"
 
 //UpdateData ...
 type UpdateData struct {
@@ -70,12 +70,12 @@ func UpdateSiteSettings(s *models.Server) error {
 				if updateData.Type == "delete" {
 
 					newMagsList := removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
-					if len(newMagsList) == 0 {
-						sOBJ.Magazines = newMagsList
-						settings = sOBJ
-					} else {
+					// if len(newMagsList) == 0 {
+					// 	sOBJ.Magazines = newMagsList
+					// 	settings = sOBJ
+					// } else {
 						settings.Magazines = newMagsList
-					}
+					// }
 
 				} else if updateData.Type == "update" {
 
@@ -97,11 +97,11 @@ func UpdateSiteSettings(s *models.Server) error {
 		"$set": &settings,
 	}
 
-	objectID, _ := primitive.ObjectIDFromHex(SettingsID)
+	// objectID, _ := primitive.ObjectIDFromHex(SettingsID)
 
-	filter := bson.M{"_id": objectID}
+	// filter := bson.M{"_id": objectID}
 
-	_, err := s.Coll.UpdateOne(context.TODO(), filter, update)
+	_, err := s.Coll.UpdateOne(context.TODO(), bson.M{}, update)
 	if err != nil {
 		s.Resp.Data = nil
 		s.Resp.Succ = false
