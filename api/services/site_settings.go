@@ -11,6 +11,9 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+//SettingsID ...
+const SettingsID = "600dc081051e9b3081b37ca6"
+
 //UpdateData ...
 type UpdateData struct {
 	MgID     string          `json:"mgID" xml:"mgID" form:"mgID"`
@@ -94,7 +97,11 @@ func UpdateSiteSettings(s *models.Server) error {
 		"$set": &settings,
 	}
 
-	_, err := s.Coll.UpdateOne(context.TODO(), bson.M{}, update)
+	objectID, _ := primitive.ObjectIDFromHex(SettingsID)
+
+	filter := bson.M{"_id": objectID}
+
+	_, err := s.Coll.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
 		s.Resp.Data = nil
 		s.Resp.Succ = false
