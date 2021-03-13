@@ -24,7 +24,7 @@ type UpdateData struct {
 //GetSiteSettings ...
 func GetSiteSettings(s *models.Server) error {
 
-	settingsObj, err := GetSettings(s)
+	settingsObj, err := GetSettings("direct",s)
 	if err != nil {
 		s.Resp.Data = nil
 		s.Resp.Succ = false
@@ -56,7 +56,7 @@ func UpdateSiteSettings(s *models.Server) error {
 		"$set": &settings,
 	}
 
-	sOBJ, _ := GetSettings(s)
+	sOBJ, _ := GetSettings("update",s)
 
 	if r == 0 {
 		//i.e no magazine was attached
@@ -127,7 +127,7 @@ func removeMagazineObjByPropVal(mags []models.Magazine, magID string) []models.M
 }
 
 //GetSettings ... contributor
-func GetSettings(s *models.Server) (models.SiteSettings, error) {
+func GetSettings(from string, s *models.Server) (models.SiteSettings, error) {
 
 	var settingsObj models.SiteSettings
 	sChan := make(chan models.SiteSettings)
@@ -136,8 +136,7 @@ func GetSettings(s *models.Server) (models.SiteSettings, error) {
 
 	err := s.Coll.FindOne(context.TODO(), bson.M{}).Decode(&settingsObj)
 
-	go func() {
-
+	getter := func() {
 		mags := settingsObj.Magazines
 
 		newS := s
@@ -169,7 +168,16 @@ func GetSettings(s *models.Server) (models.SiteSettings, error) {
 
 			settingsObj.Magazines = mags
 		}
-	}()
+	}
+
+	if from == "direct" {
+
+		getter()
+
+	} else {
+
+		go getter()
+	}
 
 	return settingsObj, err
 }
