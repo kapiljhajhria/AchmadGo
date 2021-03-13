@@ -50,7 +50,7 @@ func UpdateSiteSettings(s *models.Server) error {
 
 	r := len(settings.Magazines)
 
-	if r == 0 {
+	if r != 0 {
 		//i.e no magazine was attached
 		updateData := new(UpdateData)
 		//populate updateData with the data in the body of the request.
