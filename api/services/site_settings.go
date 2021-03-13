@@ -64,19 +64,20 @@ func UpdateSiteSettings(s *models.Server) error {
 
 				if updateData.Type == "delete" {
 					newMagsList := removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
-					if len(newMagsList) == 0 {
-						sOBJ.Magazines = []models.Magazine{}
-						settings = sOBJ
-					} else {
-						settings.Magazines = newMagsList
-					}
+					// if len(newMagsList) == 0 {
+					sOBJ.Magazines = newMagsList
+					settings = sOBJ
+					// } else {
+					// 	settings.Magazines = newMagsList
+					// }
 				} else if updateData.Type == "update" {
 					newMagsList := removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
 					newMagsList = append(newMagsList, updateData.Magazine)
-					settings.Magazines = newMagsList
+					sOBJ.Magazines = newMagsList
+					settings = sOBJ
 				} else if updateData.Type == "add" {
-					newMagsList := append(sOBJ.Magazines, updateData.Magazine)
-					settings.Magazines = newMagsList
+					sOBJ.Magazines = append(sOBJ.Magazines, updateData.Magazine)
+					settings = sOBJ
 				} else {
 
 				}
@@ -119,9 +120,9 @@ func removeMagazineObjByPropVal(mags []models.Magazine, magID string) []models.M
 
 	newMagsList := []models.Magazine{}
 
-	for i, mag := range mags {
+	for _, mag := range mags {
 		if mag.MagID != magID {
-			newMagsList = append(newMagsList, mags[i])
+			newMagsList = append(newMagsList, mag)
 		}
 	}
 
