@@ -50,10 +50,6 @@ func UpdateSiteSettings(s *models.Server) error {
 
 	r := len(settings.Magazines)
 
-	update := bson.M{
-		"$set": &settings,
-	}
-
 	if r == 0 {
 		//i.e no magazine was attached
 		updateData := new(UpdateData)
@@ -86,12 +82,15 @@ func UpdateSiteSettings(s *models.Server) error {
 
 				} else if updateData.Type == "add" {
 					newMagsList = append(newMagsList, updateData.Magazine)
-
-					update = bson.M{"$set": bson.M{"magazines":newMagsList}}
+					settings.Magazines = newMagsList
 
 				}
 			}
 		}
+	}
+
+	update := bson.M{
+		"$set": &settings,
 	}
 
 	_, err := s.Coll.UpdateOne(context.TODO(), bson.M{}, update)
