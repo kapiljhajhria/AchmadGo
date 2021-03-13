@@ -48,9 +48,9 @@ func UpdateSiteSettings(s *models.Server) error {
 	settings := models.SiteSettings{}
 	s.Ctx.BodyParser(&settings)
 
-	r := len(settings.Magazines)
+	// r := len(settings.Magazines)
 
-	if r != 0 {
+	if settings.Magazines == nil {
 		//i.e no magazine was attached
 		updateData := new(UpdateData)
 		//populate updateData with the data in the body of the request.
@@ -65,6 +65,7 @@ func UpdateSiteSettings(s *models.Server) error {
 			if updateData.From == "magazine" {
 
 				if updateData.Type == "delete" {
+
 					newMagsList = removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
 					if len(newMagsList) == 0 {
 						sOBJ.Magazines = newMagsList
@@ -72,13 +73,18 @@ func UpdateSiteSettings(s *models.Server) error {
 					} else {
 						settings.Magazines = newMagsList
 					}
+
 				} else if updateData.Type == "update" {
+
 					newMagsList = removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
 					newMagsList = append(newMagsList, updateData.Magazine)
 					settings.Magazines = newMagsList
+
 				} else if updateData.Type == "add" {
+
 					sOBJ.Magazines = append(sOBJ.Magazines, updateData.Magazine)
-					settings = sOBJ
+					settings.Magazines = sOBJ.Magazines
+
 				}
 			}
 		}
