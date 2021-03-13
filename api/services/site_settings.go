@@ -56,7 +56,7 @@ func UpdateSiteSettings(s *models.Server) error {
 		//populate updateData with the data in the body of the request.
 		err := s.Ctx.BodyParser(updateData)
 
-		newMagsList := []models.Magazine{}
+		// newMagsList := []models.Magazine{}
 
 		if err == nil {
 
@@ -66,7 +66,7 @@ func UpdateSiteSettings(s *models.Server) error {
 
 				if updateData.Type == "delete" {
 
-					newMagsList = removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
+					newMagsList := removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
 					if len(newMagsList) == 0 {
 						sOBJ.Magazines = newMagsList
 						settings = sOBJ
@@ -76,11 +76,12 @@ func UpdateSiteSettings(s *models.Server) error {
 
 				} else if updateData.Type == "update" {
 
-					newMagsList = removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
+					newMagsList := removeMagazineObjByPropVal(sOBJ.Magazines, updateData.MgID)
 					newMagsList = append(newMagsList, updateData.Magazine)
 					settings.Magazines = newMagsList
 
 				} else if updateData.Type == "add" {
+					newMagsList := sOBJ.Magazines
 					newMagsList = append(newMagsList, updateData.Magazine)
 					settings.Magazines = newMagsList
 
