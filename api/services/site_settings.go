@@ -48,9 +48,13 @@ func UpdateSiteSettings(s *models.Server) error {
 	settings := models.SiteSettings{}
 	s.Ctx.BodyParser(&settings)
 
-	// r := len(settings.Magazines)
+	r := len(settings.Magazines)
 
-	if settings.Magazines == nil {
+	update := bson.M{
+		"$set": &settings,
+	}
+
+	if r == 0 {
 		//i.e no magazine was attached
 		updateData := new(UpdateData)
 		//populate updateData with the data in the body of the request.
@@ -82,16 +86,11 @@ func UpdateSiteSettings(s *models.Server) error {
 
 				} else if updateData.Type == "add" {
 
-					sOBJ.Magazines = append(sOBJ.Magazines, updateData.Magazine)
-					settings.Magazines = sOBJ.Magazines
+					update = bson.M{"$push":bson.M{"magazines":updateData.Magazine}}
 
 				}
 			}
 		}
-	}
-
-	update := bson.M{
-		"$set": &settings,
 	}
 
 	_, err := s.Coll.UpdateOne(context.TODO(), bson.M{}, update)
