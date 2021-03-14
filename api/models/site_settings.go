@@ -19,6 +19,7 @@ type Magazine struct {
 	Title       string      `bson:"title,omitempty" json:"title" xml:"title" form:"title"`
 	Image       string      `bson:"image,omitempty" json:"image" xml:"image" form:"image"`
 	MagID       string      `bson:"magId,omitempty" json:"magId" xml:"magId" form:"magId"`
+	Status       string      `bson:"status,omitempty" json:"status" xml:"status" form:"status"`
 	Directories []string    `bson:"directories,omitempty" json:"directories" xml:"directories" form:"directories"`
 	Authors     []MagAuthor `bson:"authors,omitempty" json:"authors" xml:"authors" form:"authors"`
 }
