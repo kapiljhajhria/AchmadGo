@@ -4,11 +4,12 @@ import "time"
 
 //UserSettings ...
 type UserSettings struct {
-	AllowNotifications      bool `bson:"allow_notifications" json:"allow_notifications" xml:"allow_notifications" form:"allow_notifications"`
-	ShowLatestBlogUpdates   bool `bson:"show_latest_blog_updates" json:"show_latest_blog_updates" xml:"show_latest_blog_updates" form:"show_latest_blog_updates"`
-	DisplayMyPostsToMeFirst bool `bson:"display_my_posts_to_me_first" json:"display_my_posts_to_me_first" xml:"display_my_posts_to_me_first" form:"display_my_posts_to_me_first"`
-	KeepAPublicProfile      bool `bson:"keep_a_public_profile" json:"keep_a_public_profile" xml:"keep_a_public_profile" form:"keep_a_public_profile"`
-	KeepMyBlogPostsPrivate  bool `bson:"keep_my_blog_posts_private" json:"keep_my_blog_posts_private" xml:"keep_my_blog_posts_private" form:"keep_my_blog_posts_private"`
+	FavMags                 []string `bson:"fav_mags" json:"fav_mags" xml:"fav_mags" form:"fav_mags"`
+	AllowNotifications      bool     `bson:"allow_notifications" json:"allow_notifications" xml:"allow_notifications" form:"allow_notifications"`
+	ShowLatestBlogUpdates   bool     `bson:"show_latest_blog_updates" json:"show_latest_blog_updates" xml:"show_latest_blog_updates" form:"show_latest_blog_updates"`
+	DisplayMyPostsToMeFirst bool     `bson:"display_my_posts_to_me_first" json:"display_my_posts_to_me_first" xml:"display_my_posts_to_me_first" form:"display_my_posts_to_me_first"`
+	KeepAPublicProfile      bool     `bson:"keep_a_public_profile" json:"keep_a_public_profile" xml:"keep_a_public_profile" form:"keep_a_public_profile"`
+	KeepMyBlogPostsPrivate  bool     `bson:"keep_my_blog_posts_private" json:"keep_my_blog_posts_private" xml:"keep_my_blog_posts_private" form:"keep_my_blog_posts_private"`
 }
 
 //User ...

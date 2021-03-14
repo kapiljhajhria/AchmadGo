@@ -99,7 +99,7 @@ func Register(s *models.Server) error {
 	//hash user's password
 	hashPass, _ := config.Hash(userPassword)
 	user.Password = string(hashPass)
-	user.Settings = models.UserSettings{true, true, false, true, false}
+	user.Settings = models.UserSettings{nil,true, true, false, true, false}
 	user.CreatedAt = time.Now()
 
 	result, err := s.Coll.InsertOne(context.TODO(), user)
