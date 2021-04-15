@@ -17,6 +17,7 @@ type Directory struct {
 //Magazine ... visibility
 type Magazine struct {
 	Title       string      `bson:"title,omitempty" json:"title" xml:"title" form:"title"`
+	PubType     string      `bson:"pub_type,omitempty" json:"pub_type" xml:"pub_type" form:"pub_type"`
 	Image       string      `bson:"image,omitempty" json:"image" xml:"image" form:"image"`
 	MagID       string      `bson:"magId,omitempty" json:"magId" xml:"magId" form:"magId"`
 	Status      string      `bson:"status,omitempty" json:"status" xml:"status" form:"status"`
